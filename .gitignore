@@ -1,0 +1,79 @@
+# =========================================================
+# Obecné soubory pro celý projekt
+# =========================================================
+.DS_Store             # Soubory specifické pro macOS
+Thumbs.db             # Soubory specifické pro Windows
+
+# Soubory a složky z IDE 
+.idea/                # JetBrains IDEs (IntelliJ, PyCharm, WebStorm)
+.vscode/              # Visual Studio Code (pokud by se složka objevila v rootu)
+*.suo
+*.user
+*.bak
+*.swp                 # Swap soubory Vim/NeoVim
+*.iml                 # IntelliJ IDEA module files
+
+
+# =========================================================
+# Python / Django specifické ignorované soubory
+# =========================================================
+
+# Virtuální prostředí
+env/
+venv/
+.venv/
+_env/
+.virtualenvs/
+.direnv/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# Editor specific
+*.sublime-project
+*.sublime-workspace
+
+# Databáze
+db.sqlite3            # Výchozí SQLite databáze (pokud ji používáte)
+*.sqlite3
+*.db-journal
+
+# Proměnné prostředí a citlivá data 
+.env                  # Hlavní .env soubor, pokud ho máte v rootu
+.env_*                # Jakékoli .env soubory (např. .env.production)
+local_settings.py     # Pokud máte lokální nastavení Django s citlivými daty
+
+# Statické soubory, mediální soubory a buildy
+/static_collected/    # Složka pro collectstatic
+/media/               # Složka pro uploadované mediální soubory (pokud je v rootu)
+
+# Dokumentace
+/docs/_build/
+
+# Testy
+.coverage
+.tox/
+/htmlcov/
+.pytest_cache/
+
+# Může být redundatní, ale je to pojistka pro případ, že by lokální
+# .gitignore ve frontend složce z nějakého důvodu nefungoval správně.
+/frontend/build/
+/frontend/dist/
+/frontend/node_modules/
+/frontend/logs/
+/frontend/*.log
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/pnpm-debug.log*
+/frontend/lerna-debug.log*
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/.eslintcache
+/frontend/.pnp
+/frontend/.pnp.js
