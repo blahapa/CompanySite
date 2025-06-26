@@ -116,6 +116,7 @@ export interface MonthlyTransactionSummary {
   monthly_net_balance: number;
 }
 export interface Document {
+  id: number;
   title: string;
   description: string;
   uploaded_by: string;

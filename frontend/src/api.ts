@@ -112,6 +112,7 @@ export const companyStats = {
 
 export const documentApi = {
   getAll: () => api.get<Document[]>('/api/documents/'),
+  getDocument: (id: number) => api.get<Document>(`/api/documents/${id}`),
 }
 
 export const financeApi = {

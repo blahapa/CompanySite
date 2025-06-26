@@ -225,6 +225,14 @@ class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
     permission_classes = [IsAuthenticated, DjangoModelPermissions] 
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff or user.groups.filter(name='Manager').exists() or \
+           user.has_perm('api.can_view_all_documents'):
+            return Document.objects.all().order_by('-uploaded_at')
+        
+        return Document.objects.filter(employee=user).order_by('-uploaded_at')
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

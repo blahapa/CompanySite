@@ -708,92 +708,91 @@ button:disabled {
   background-color: #5d36a9;
 }
 .employees-list-container {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 .employees-list-title {
-    color: #333;
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+  color: #333;
+  font-size: 1.8em;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
 }
-.employee-card {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease-in-out; 
+.employee-card, .all_documents_content {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out; 
 }
-.employee-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.employee-card:hover, .all_documents_content:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .employee-name {
-    color: #0056b3;
-    font-size: 1.3em;
-    margin-top: 0;
-    margin-bottom: 5px;
+  color: #0056b3;
+  font-size: 1.3em;
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 .employee-position,
 .employee-email,
 .employee-department {
-    color: #666;
-    font-size: 0.95em;
-    margin-bottom: 3px;
+  color: #666;
+  font-size: 0.95em;
+  margin-bottom: 3px;
 }
 .no-employees-message {
-    color: #888;
-    font-style: italic;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
+  color: #888;
+  font-style: italic;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
 }
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-    font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: bold;
 }
 .form-group input[type="date"],
 .form-group select,
 .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; 
-    font-size: 1em;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; 
+  font-size: 1em;
 }
 .form-group textarea {
-    resize: vertical;
-    min-height: 80px;
+  resize: vertical;
+  min-height: 80px;
 }
 .submit-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 .leave-list {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 .leave-item {
-    background-color: #fdfdfd;
-    border: 1px solid #e9ecef;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  background-color: #fdfdfd;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .leave-details p {
     margin: 5px 0;
@@ -1124,6 +1123,15 @@ button:disabled {
   text-align: left;
   font-weight: 200;
   margin: 0;
+}
+.all_documents_content h3 {
+  color: #007bff;
+  font-weight: 800;
+}
+.document-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 @keyframes fadeInScale {
   from {
