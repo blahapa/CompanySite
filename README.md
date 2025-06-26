@@ -64,16 +64,6 @@ Ujistěte se, že máte nainstalované:
 * npm nebo Yarn
 * Git
 
-### Backend (Django)
-
-Aha! Děkuji za upřesnění. To je velmi důležitý rozdíl, protože Poetry mění způsob, jakým spravujete závislosti a virtuální prostředí v Python projektu.
-
-Pokud používáte Poetry, pak kroky pro instalaci a spuštění backendu se výrazně zjednoduší a budou elegantnější.
-
-Zde je upravená sekce "Backend (Django)" pro vaše README.md, která počítá s použitím Poetry:
-
-Upravená sekce "Backend (Django)" pro README.md
-Markdown
 
 ### Backend (Django)
 

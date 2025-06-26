@@ -18,6 +18,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onEmployeeAdded, onEmployee
     const [position, setPosition] = useState('');
     const [department, setDepartment] = useState<number | ''>(''); 
     const [location, setLocation] = useState(''); 
+    const [birthday, setBirthday] = useState(""); 
     const [departments, setDepartments] = useState<Department[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -42,7 +43,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onEmployeeAdded, onEmployee
             setPhoneNumber(employeeToEdit.phone_number || "");
             setPosition(employeeToEdit.position);
             setDepartment(employeeToEdit.department ?? "");
-
+            setBirthday(employeeToEdit.date_of_birth);
             setLocation(employeeToEdit.location || ''); 
         } else {
             setFirstName('');
@@ -52,6 +53,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onEmployeeAdded, onEmployee
             setPosition('');
             setDepartment('');
             setLocation('');
+            setBirthday("");
             setError(null); 
             }
     }, [employeeToEdit]);
@@ -73,6 +75,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onEmployeeAdded, onEmployee
             position: position,
             department: department as number, 
             location: location,
+            date_of_birth: birthday
         };
         try {
             if (employeeToEdit) {
@@ -88,6 +91,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onEmployeeAdded, onEmployee
                 setPosition('');
                 setDepartment('');
                 setLocation('');
+                setBirthday("");
             }
         } catch (err: any) {
             setError(err.message || "Nepodařilo se uložit zaměstnance.");
@@ -117,6 +121,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onEmployeeAdded, onEmployee
                 <form onSubmit={handleSubmit} className="employee-form">
                     <input type="text" placeholder="Jméno" value={firstName} onChange={(e) => setFirstName(e.target.value)} required/>
                     <input type="text" placeholder="Příjmení" value={lastName}onChange={(e) => setLastName(e.target.value)} required/>
+                    <input type="text" placeholder="Datum narození" value={birthday} onChange={(e) => setBirthday(e.target.value)} required/>
                     <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
                     <input type="tel" placeholder="Telefonní číslo" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}/>
                     <input type="text" placeholder="Pozice" value={position} onChange={(e) => setPosition(e.target.value)} required/>

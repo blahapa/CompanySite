@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type {  Transaction, TransactionCategory, TransactionSummary, MonthlyTransactionSummary, UserDetails } from "../types";
 import { financeApi } from '../api';
 
@@ -13,10 +13,18 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
     const [categories, setCategories] = useState<TransactionCategory[]>([]);
     const [summary, setSummary] = useState<TransactionSummary | null>(null);
     const [monthlySummary, setMonthlySummary] = useState<MonthlyTransactionSummary | null>(null);
+    const modalContentRef = useRef<HTMLDivElement>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showAddCathegory, setShowAddCathegory] = useState(false);
+    const [showAddDetails, setShowAddDetails] = useState(false);
+    const [newCathegoryData, setNewCathegoryData] = useState<Omit<TransactionCategory, 'id'>>({
+        name: "",
+        description: "",
+        type: "EXPENSE"
+    });
     const [newTransactionData, setNewTransactionData] = useState<Omit<Transaction, 'id' | 'category_name' | 'recorded_by' | 'recorded_by_details' | 'created_at' | 'updated_at'>>({
         title: '',
         amount: 0,
@@ -26,6 +34,7 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
         category: null,
         description: ''
     });
+    const [showTransactionDetails, setShowTransactionDetails] = useState<Transaction>();
 
     useEffect(() => {
         if (isInGroup("CEO")) {
@@ -40,6 +49,22 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
             setError("You do not have permission to view finance data.");
         }
     }, [isInGroup("CEO")]);
+
+    const onClose = () => {
+        setShowAddDetails(false);
+    };
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (modalContentRef.current && !modalContentRef.current.contains(event.target as Node)) {
+                onClose();
+            } 
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [onClose]); 
+
 
     const fetchTransactions = async () => {
         setLoading(true);
@@ -89,6 +114,14 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
             [name]: name === 'amount' ? parseFloat(value) || 0 : value,
         }));
     };
+    const handleFormCathegoryChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+
+        setNewCathegoryData(prev => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const categoryId = e.target.value === '' ? null : parseInt(e.target.value);
@@ -97,7 +130,22 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
             category: categoryId,
         }));
     };
+     const handleSubmitCathegory = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await financeApi.createCategory(newCathegoryData);
+            alert('Cathegory added successfully!');
+            setNewCathegoryData(newCathegoryData);
+            setShowAddCathegory(false);
 
+        } catch (err: any) {
+            console.error("Failed to add cathegory:", err.response?.data || err);
+            alert("Failed to add cathegory: " + (err.response?.data?.detail || err.message));
+        } finally {
+            setLoading(false);
+        }
+    };
     const handleSubmitTransaction = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -120,19 +168,15 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
             setLoading(false);
         }
     };
-    const handleDeleteTransaction = async (id: number) => {
-        if (!window.confirm("Are you sure you want to delete this transaction?")) return;
+    const handleDetailsTransaction = async (id: number) => {
         setLoading(true);
+        setShowAddDetails(true);
         try {
-            await financeApi.deleteTransaction(id);
-            alert('Transaction deleted successfully!');
-            fetchTransactions();
-            fetchSummary(); 
-            const today = new Date();
-            fetchMonthlySummary(today.getFullYear(), today.getMonth() + 1);
+            const response = await financeApi.getTransaction(id);
+            setShowTransactionDetails(response);
         } catch (err: any) {
-            console.error("Failed to delete transaction:", err.response?.data || err);
-            alert("Failed to delete transaction: " + (err.response?.data?.detail || err.message));
+            console.error("Failed to load transaction:", err.response?.data || err);
+            alert("Failed to load transaction: " + (err.response?.data?.detail || err.message));
         } finally {
             setLoading(false);
         }
@@ -176,7 +220,10 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
             {isInGroup("CEO") && (
                 <div className="add-transaction-section">
                     <button className="toggle-form-button" onClick={() => setShowAddForm(!showAddForm)}>
-                        {showAddForm ? 'Hide Form' : 'Add New Transaction'}
+                        {showAddForm ? 'Schovat Formulář' : 'Přidej Novou Transakci'}
+                    </button>
+                    <button className="toggle-form-button" onClick={() => setShowAddCathegory(!showAddCathegory)}>
+                    {showAddCathegory ? 'Schovat Formulář' : 'Přidej Novou Kategorii'}
                     </button>
                     {showAddForm && (
                         <div className="transaction-form-card">
@@ -223,7 +270,30 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
                                     <label htmlFor="description">Popisek:</label>
                                     <textarea id="description" name="description" value={newTransactionData.description || ''} onChange={handleFormChange}></textarea>
                                 </div>
-                                <button type="submit" className="submit-button" disabled={loading}>Add Transaction</button>
+                                <button type="submit" className="submit-button" disabled={loading}>Přidej Transakci</button>
+                            </form>
+                        </div>
+                    )}
+                    {showAddCathegory && (
+                         <div className="transaction-form-card">
+                            <h3>Přidej Novou Kategorii</h3>
+                            <form onSubmit={handleSubmitCathegory} className="transaction-form">
+                                <div className="form-group">
+                                    <label htmlFor="title_cathegory">Název:</label>
+                                    <input type="text" id="title_cathegory" name="name" value={newCathegoryData.name}  onChange={handleFormCathegoryChange} required />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="description_cathegory">Popisek:</label>
+                                    <textarea id="description_cathegory" name="description" value={newCathegoryData.description || ''}  onChange={handleFormCathegoryChange} ></textarea>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="type">Typ:</label>
+                                    <select id="type" name="type" value={newCathegoryData.type}  onChange={handleFormCathegoryChange} required>
+                                        <option value="INCOME">Příjem</option>
+                                        <option value="EXPENSE">Výdaj</option>
+                                    </select>
+                                </div>
+                                <button type="submit" className="submit-button" disabled={loading}>Přidej Kategorii</button>
                             </form>
                         </div>
                     )}
@@ -259,10 +329,7 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
                                     <td>{t.recorded_by_details ? `${t.recorded_by_details.username}` : 'N/A'}</td>
                                     <td>
                                         {(isInGroup("CEO") && t.recorded_by === currentUser?.id) || isInGroup("CEO") ? (
-                                            <button className="edit-button">Edit</button> 
-                                        ) : null}
-                                        {(isInGroup("CEO") && t.recorded_by === currentUser?.id) || isInGroup("CEO") ? (
-                                            <button className="delete-button" onClick={() => handleDeleteTransaction(t.id)}>Smazat</button>
+                                            <button className="details-button" onClick={() => handleDetailsTransaction(t.id)}>Details</button>
                                         ) : null}
                                     </td>
                                 </tr>
@@ -271,6 +338,20 @@ const FinanceDashboard: React.FC<FinanceDashboardInterface> = ({isInGroup, curre
                     </table>
                 )}
             </div>
+            {showAddDetails &&(
+                <div className='modal-backdrop'>
+                    <div className='modal-content transaction-details' ref={modalContentRef}>
+                        <button onClick={onClose} className='modal-close-button'>Zavřít</button>
+                        <h1>{showTransactionDetails?.id} - {showTransactionDetails?.title} <span>({showTransactionDetails?.category_name ? showTransactionDetails.category_name: "N/A"})</span></h1>
+                        <h3>{showTransactionDetails?.transaction_date}</h3>
+                        <h4>Typ: {showTransactionDetails?.type}</h4>
+                        <h4>Částka: {showTransactionDetails?.amount} CZK</h4>
+                        <h4>Platební metoda: {showTransactionDetails?.payment_method}</h4>
+                        <h4>Vytvořeno: {showTransactionDetails?.recorded_by_details?.username}</h4>
+                        <p>Popisek: {showTransactionDetails?.description ? showTransactionDetails?.description : "N/A"}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 

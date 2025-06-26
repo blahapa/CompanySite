@@ -20,6 +20,7 @@ export interface Employee {
   email: string;
   phone_number?: string; 
   location?: string | null;
+  date_of_birth: string;
 }
 export interface CompanyStats {
   total_employees: number;
@@ -107,11 +108,21 @@ export interface TransactionSummary {
   net_balance: number;
   category_summary: { category__name: string; type: 'INCOME' | 'EXPENSE'; total: number; }[];
 }
-
 export interface MonthlyTransactionSummary {
   year: number;
   month: number;
   monthly_income: number;
   monthly_expense: number;
   monthly_net_balance: number;
+}
+export interface Document {
+  title: string;
+  description: string;
+  uploaded_by: string;
+  uploaded_at: string;
+  employee: Employee;
+  document_type: string;
+  is_public: boolean;
+  effective_date?: string;
+  contract_end_date?: string;
 }

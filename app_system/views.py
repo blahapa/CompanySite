@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
-from .models import Department, Employee, EmployeeReport, AttendanceRecord, Leave, Transaction, TransactionCategory
-from .serializers import DepartmentSerializer, EmployeeSerializer, LeaveSerializer, UserAuthSerializer,EmployeeReportSerializer, AttendanceRecordSerializer, TransactionSerializer, TransactionCategorySerializer
+from .models import Department, Employee, EmployeeReport, AttendanceRecord, Leave, Transaction, Document, TransactionCategory
+from .serializers import DepartmentSerializer, EmployeeSerializer, LeaveSerializer, DocumentSerializer, UserAuthSerializer,EmployeeReportSerializer, AttendanceRecordSerializer, TransactionSerializer, TransactionCategorySerializer
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
@@ -220,7 +220,12 @@ class TransactionViewSet(viewsets.ModelViewSet):
             'monthly_expense': monthly_expense,
             'monthly_net_balance': monthly_net_balance,
         })
-    
+class DocumentViewSet(viewsets.ModelViewSet):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+    permission_classes = [IsAuthenticated, DjangoModelPermissions] 
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_view(request):

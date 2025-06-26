@@ -1,5 +1,5 @@
 import type { Employee, Leave, NewLeaveData, Department, CompanyStats, EmployeeReport, 
-AttendanceRecord, DepartmentDetailsType, Transaction, TransactionCategory, TransactionSummary, MonthlyTransactionSummary  } from './types';
+AttendanceRecord, DepartmentDetailsType, Document, Transaction, TransactionCategory, TransactionSummary, MonthlyTransactionSummary  } from './types';
 
 
 const API_BASE_URL = '/api';
@@ -108,6 +108,10 @@ export const authApi = {
 };
 export const companyStats = {
   getCompanyStats:  () => api.get<CompanyStats>(`${API_BASE_URL}/company-stats/`)
+}
+
+export const documentApi = {
+  getAll: () => api.get<Document[]>('/api/documents/'),
 }
 
 export const financeApi = {

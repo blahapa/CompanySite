@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Employee, Department, EmployeeReport, AttendanceRecord, Leave, Transaction, TransactionCategory
+from .models import Employee, Department, EmployeeReport, AttendanceRecord, Document, Leave, Transaction, TransactionCategory
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 
@@ -100,3 +100,12 @@ class TransactionSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         validated_data.pop('recorded_by', None)
         return super().update(instance, validated_data)
+    
+
+class DocumentSerializer(serializers.ModelSerializer):
+    uploaded_by = serializers.CharField(source='uploaded_by.username', read_only=True)
+
+    class Meta:
+        model = Document
+        fields = '__all__'
+    

@@ -40,7 +40,7 @@ const EmployeeDetails: React.FC = () => {
 
   return (
     <div>
-      <h3>{employee.first_name} {employee.last_name}</h3>
+      <h3>{employee.first_name} {employee.last_name} ({employee.date_of_birth})</h3>
       <div>
         <p>Email: {employee.email}</p>
         <p>Oddělení: {employee.department_name}</p>

@@ -19,8 +19,8 @@ class Employee(models.Model):
     position = models.CharField(max_length=100)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True, related_name='employees')
     email = models.EmailField(unique=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
-
     location = models.CharField(max_length=255, blank=True, null=True, help_text="Název budovy nebo pracoviště")
 
     def __str__(self):
@@ -161,3 +161,33 @@ class Transaction(models.Model):
         verbose_name = "Transakce"
         verbose_name_plural = "Transakce"
         ordering = ['-transaction_date', '-created_at']
+
+class Document(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='uploaded_documents')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    employee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='employee_documents')
+    document_type = models.CharField(max_length=50, choices=[('contract', 'Contract'), ('policy', 'Policy'), ('training', 'Training Record')])
+    is_public = models.BooleanField(default=False) 
+
+    effective_date = models.DateField(null=True, blank=True, verbose_name="Datum platnosti od")
+    contract_end_date = models.DateField(null=True,blank=True,verbose_name="Datum ukončení smlouvy")
+    
+    def __str__(self):
+        return self.title
+    
+    @property
+    def is_expiring_soon(self):
+        if self.document_type == 'contract' and self.contract_end_date:
+            from datetime import date, timedelta
+            return self.contract_end_date <= date.today() + timedelta(days=30) and self.contract_end_date >= date.today()
+        return False
+
+    @property
+    def has_expired(self):
+        if self.document_type == 'contract' and self.contract_end_date:
+            from datetime import date
+            return self.contract_end_date < date.today()
+        return False
