@@ -11,7 +11,6 @@
 - [Použití](#použití)
 - [Struktura Projektu](#struktura-projektu)
 - [Licence](#licence)
-- [Kontakt](#kontakt)
 
 ---
 ## O Projektu
@@ -148,4 +147,4 @@ Ujistěte se, že máte nainstalované:
 3.  **Django Admin:** Pro přístup k backend administraci (správa uživatelů, kategorií, transakcí přímo v databázi) navštivte `http://127.0.0.1:8000/admin/`.
 
 ## Licence
-Tento projekt je licencován pod MIT License. Podrobnosti viz soubor `LICENSE`.
+Tento projekt je licencován pod AGPL-3.0 License. Podrobnosti viz soubor `LICENSE`.
