@@ -1,5 +1,7 @@
 # Company Site (HRSM)
 
+![Náhled aplikace](images/screen.png)
+
 ## Obsah
 - [O Projektu](#o-projektu)
 - [Funkcionality](#funkcionality)
