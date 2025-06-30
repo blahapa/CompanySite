@@ -10,8 +10,8 @@ const SystemActions: React.FC = () => {
         <div className='action-card'><Link to="/calendar">Kalendář</Link></div>
         <div className='action-card'><Link to="/finance">Finance</Link></div>
         <div className='action-card'><Link to="/documents">Dokumenty</Link></div>
+        <div className='action-card'><Link to="/performancereviews">Hodnocení</Link></div>
     </div>
   );
 };
-
 export default SystemActions;

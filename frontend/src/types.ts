@@ -127,3 +127,17 @@ export interface Document {
   effective_date?: string;
   contract_end_date?: string;
 }
+export interface PerformanceReviewType {
+  employee: string;
+  reviewer?: string;
+  date: string;
+  period: string;
+  quality_of_work: number;
+  attendance: number;
+  communication: number;
+  teamwork: number;
+  initiative: number;
+  comments?: string;
+  recommended_training?: string;
+  average_score: number;
+}

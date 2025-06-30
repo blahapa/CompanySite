@@ -191,3 +191,28 @@ class Document(models.Model):
             from datetime import date
             return self.contract_end_date < date.today()
         return False
+    
+class PerformanceReview(models.Model):
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    reviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='uploaded_review')
+    date = models.DateField(auto_now_add=True)
+    period = models.CharField(max_length=20) 
+
+    quality_of_work = models.PositiveIntegerField()
+    attendance = models.PositiveIntegerField()
+    communication = models.PositiveIntegerField()
+    teamwork = models.PositiveIntegerField()
+    initiative = models.PositiveIntegerField()
+    
+    comments = models.TextField(blank=True)
+    recommended_training = models.TextField(blank=True)
+
+    def average_score(self):
+        fields = [
+            self.quality_of_work,
+            self.attendance,
+            self.communication,
+            self.teamwork,
+            self.initiative
+        ]
+        return round(sum(fields) / len(fields), 2)

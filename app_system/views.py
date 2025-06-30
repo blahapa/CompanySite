@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
-from .models import Department, Employee, EmployeeReport, AttendanceRecord, Leave, Transaction, Document, TransactionCategory
-from .serializers import DepartmentSerializer, EmployeeSerializer, LeaveSerializer, DocumentSerializer, UserAuthSerializer,EmployeeReportSerializer, AttendanceRecordSerializer, TransactionSerializer, TransactionCategorySerializer
+from .models import Department, Employee, EmployeeReport, PerformanceReview, AttendanceRecord, Leave, Transaction, Document, TransactionCategory
+from .serializers import DepartmentSerializer, EmployeeSerializer, PerformanceReviewSerializer, LeaveSerializer, DocumentSerializer, UserAuthSerializer,EmployeeReportSerializer, AttendanceRecordSerializer, TransactionSerializer, TransactionCategorySerializer
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
@@ -233,6 +233,20 @@ class DocumentViewSet(viewsets.ModelViewSet):
         
         return Document.objects.filter(employee=user).order_by('-uploaded_at')
 
+class PerformanceReviewViewSet(viewsets.ModelViewSet):
+    queryset = PerformanceReview.objects.all()
+    serializer_class = PerformanceReviewSerializer
+    permission_classes = [IsAuthenticated, DjangoModelPermissions] 
+
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.is_staff or user.groups.filter(name='Manager').exists() or \
+           user.has_perm('api.can_view_all_documents'):
+            return PerformanceReview.objects.all().order_by('-date')
+        
+        return PerformanceReview.objects.filter(employee=user).order_by('-date')
+    
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

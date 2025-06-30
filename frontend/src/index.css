@@ -721,7 +721,7 @@ button:disabled {
   border-bottom: 2px solid #eee;
   padding-bottom: 10px;
 }
-.employee-card, .all_documents_content {
+.employee-card, .all_documents_content, .all_reviews_content {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -1132,6 +1132,25 @@ button:disabled {
   display: flex;
   flex-direction: row;
   gap: 10px;
+}
+.date_span {
+    color: #666;
+}
+.review_params {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+}
+.all_reviews_content h2 {
+  color: rgb(36, 129, 187);
+}
+.all_reviews_content h3 {
+  margin: 0;
+}
+#review_comentar {
+  font-style: italic;
 }
 @keyframes fadeInScale {
   from {

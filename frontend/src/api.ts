@@ -1,5 +1,5 @@
 import type { Employee, Leave, NewLeaveData, Department, CompanyStats, EmployeeReport, 
-AttendanceRecord, DepartmentDetailsType, Document, Transaction, TransactionCategory, TransactionSummary, MonthlyTransactionSummary  } from './types';
+AttendanceRecord, DepartmentDetailsType, Document, PerformanceReviewType, Transaction, TransactionCategory, TransactionSummary, MonthlyTransactionSummary  } from './types';
 
 
 const API_BASE_URL = '/api';
@@ -129,6 +129,10 @@ export const financeApi = {
     getTransactionsSummary: () => api.get<TransactionSummary>('/api/transactions/summary/'),
     getMonthlyTransactionsSummary: (year: number, month: number) => api.get<MonthlyTransactionSummary>(`/api/transactions/monthly-summary/?year=${year}&month=${month}`),
 };
+
+export const performanceReviewApi = {
+    getAll: () => api.get<PerformanceReviewType[]>('/api/performance-reviews/'),
+}
 
 export const getCsrfToken = async (): Promise<string | null> => {
     const response = await fetch(`${API_BASE_URL}/auth/csrf/`);

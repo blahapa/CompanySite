@@ -13,6 +13,7 @@ import FinanceDashboard from './components/FinanceDashboard';
 import Calendar from'./components/Calendar';
 import LoginForm from './components/LoginForm';
 import Documents from './components/Documents';
+import PerformanceReview from './components/PerformanceReview';
 import { authApi } from './api';
 import type { UserDetails   } from './types';
 
@@ -141,6 +142,7 @@ function App() {
           <Route path="/employees/:employee_id" element={<EmployeeDetails />}  />
           <Route path="/calendar" element={<Calendar />}  />
           <Route path="/documents" element={<Documents />}  />
+          <Route path="/performancereviews" element={<PerformanceReview />}  />
           <Route path="/finance" element={<FinanceDashboard isInGroup={isInGroup} currentUser={currentUserDetails} />} />
         </>
         ) : (

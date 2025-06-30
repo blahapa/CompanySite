@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Employee, Department, EmployeeReport, AttendanceRecord, Document, Leave, Transaction, TransactionCategory
+from .models import Employee, Department, PerformanceReview, EmployeeReport, AttendanceRecord, Document, Leave, Transaction, TransactionCategory
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 
@@ -108,4 +108,17 @@ class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = '__all__'
+
+class PerformanceReviewSerializer(serializers.ModelSerializer):
+    employee = serializers.CharField(source='employee.__str__', read_only=True)
+    reviewer = serializers.CharField(source='reviewer.username', read_only=True)
+    average_score = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PerformanceReview
+        fields = '__all__'
+        
+    def get_average_score(self, obj):
+        return obj.average_score()
+
     

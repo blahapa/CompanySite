@@ -21,7 +21,7 @@ from rest_framework.routers import DefaultRouter
 from app_system.views import (
     EmployeeViewSet, DepartmentViewSet, company_stats,
     login_view, logout_view, user_info , EmployeeReportViewSet, AttendanceRecordViewSet, 
-    LeaveViewSet, TransactionViewSet, TransactionCategoryViewSet, DocumentViewSet
+    LeaveViewSet, TransactionViewSet, TransactionCategoryViewSet, DocumentViewSet, PerformanceReviewViewSet
 )
 
 router = DefaultRouter()
@@ -33,6 +33,7 @@ router.register(r'leaves', LeaveViewSet)
 router.register(r'transaction-categories', TransactionCategoryViewSet)
 router.register(r'transactions', TransactionViewSet)
 router.register(r'documents', DocumentViewSet)
+router.register(r'performance-reviews', PerformanceReviewViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
