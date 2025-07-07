@@ -68,16 +68,19 @@ Ujistěte se, že máte nainstalované:
 * npm nebo Yarn
 * Git
 
+### Bash Instalace a Spuštění
+
+Pro rychlejší instalaci a spuštění můžete využít bash skripty `setup.sh` a `run.sh`.
 
 ### Backend (Django)
 
 1.  **Přejděte do složky `CompanySite`:**
     ```bash
-    cd companysite
+    cd CompanySite
     ```
 2.  **Nainstalujte závislosti pomocí Poetry:**
     Pokud nemáte Poetry nainstalované, nainstalujte ho podle oficiální dokumentace (např. `pip install poetry`).
-    Poté spusťte v adresáři `backend`:
+    Poté spusťte v adresáři `CompanySite`:
     ```bash
     poetry install
     ```
