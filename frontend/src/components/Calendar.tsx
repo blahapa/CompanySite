@@ -114,30 +114,30 @@ const Calendar: React.FC = () => {
     if (loading) return <div className="loading-message">Načítání dat...</div>;
     if (error) return <div className="error-message">Chyba: {error}</div>;
 
-  return (
-    <div className="calendar-container">
-        <div className="calendar-header">
-            <button onClick={goToPreviousMonth}>Předtím</button>
-            <h2>{currentDate.toLocaleString("cs-CZ", { month: "long", year: "numeric" })}</h2>
-            <button onClick={goToNextMonth}>Další</button>
+    return (
+        <div className="calendar-container">
+            <div className="calendar-header">
+                <button onClick={goToPreviousMonth}>Předtím</button>
+                <h2>{currentDate.toLocaleString("cs-CZ", { month: "long", year: "numeric" })}</h2>
+                <button onClick={goToNextMonth}>Další</button>
+            </div>
+        <div className="calendar-grid">
+            {["Po", "Ut", "St", "Čt", "Pa", "So", "Ne"].map((day) => (
+                <div key={day} className="calendar-day label">{day}</div>
+            ))}
+            {generateCalendar.map((day, index) => (
+            <div key={index} className={`calendar-day ${day.isToday ? "today" : ""}${!day.isCurrentMonth ? "other-month" : ""}${day.eventToday ? "eventToday" : ""}`}>
+            {day.day !== 0 ? day.day : ""}
+                {(day.eventToday || day.isToday) && (
+                <div className="tooltip">
+                    {day.eventToday ? day.eventName : "Dnešní den"}
+                </div>
+                )}
+            </div>
+            ))}
         </div>
-      <div className="calendar-grid">
-        {["Po", "Ut", "St", "Čt", "Pa", "So", "Ne"].map((day) => (
-            <div key={day} className="calendar-day label">{day}</div>
-        ))}
-        {generateCalendar.map((day, index) => (
-          <div key={index} className={`calendar-day ${day.isToday ? "today" : ""}${!day.isCurrentMonth ? "other-month" : ""}${day.eventToday ? "eventToday" : ""}`}>
-          {day.day !== 0 ? day.day : ""}
-            {(day.eventToday || day.isToday) && (
-              <div className="tooltip">
-                {day.eventToday ? day.eventName : "Dnešní den"}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 

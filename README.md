@@ -34,6 +34,9 @@ Cílem je poskytnout moderní, škálovatelné a bezpečné řešení pro firmy 
 * **Správa Kategorií:** 
 * **Správa Absencí**
 * **Reporty Zaměstnanců**
+* **Kalendář s absencí**
+* **Hodnocení Zaměstnanců**
+* **Dokumenty**
 
 ## Technologie
 
@@ -68,9 +71,9 @@ Ujistěte se, že máte nainstalované:
 
 ### Backend (Django)
 
-1.  **Přejděte do složky `backend`:**
+1.  **Přejděte do složky `CompanySite`:**
     ```bash
-    cd backend
+    cd companysite
     ```
 2.  **Nainstalujte závislosti pomocí Poetry:**
     Pokud nemáte Poetry nainstalované, nainstalujte ho podle oficiální dokumentace (např. `pip install poetry`).

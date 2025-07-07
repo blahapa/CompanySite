@@ -10,51 +10,51 @@ function getCookie(name: string): string | null {
 }
 
 async function authenticatedFetch<T>(url: string, method: string = 'GET', body?: any): Promise<T> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  };
+    const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+    };
 
-  if (method !== 'GET' && method !== 'HEAD') {
-    const csrfToken = getCookie('csrftoken'); 
-    if (!csrfToken) {
-        console.error("CSRF token not found in cookies. This is likely the problem.");
-        throw new Error("CSRF token is missing. Please try reloading the page or logging in again.");
+    if (method !== 'GET' && method !== 'HEAD') {
+        const csrfToken = getCookie('csrftoken'); 
+        if (!csrfToken) {
+            console.error("CSRF token not found in cookies. This is likely the problem.");
+            throw new Error("CSRF token is missing. Please try reloading the page or logging in again.");
+        }
+        headers['X-CSRFToken'] = csrfToken;
     }
-    headers['X-CSRFToken'] = csrfToken;
-  }
-  const options: RequestInit = {
-    method: method,
-    headers: headers,
-    credentials: 'include',
-  };
+    const options: RequestInit = {
+        method: method,
+        headers: headers,
+        credentials: 'include',
+    };
 
-  if (body) {
-    options.body = JSON.stringify(body);
-  }
-
-  const response = await fetch(url, options);
-
-  if (!response.ok) {
-    let errorBody: any;
-    try {
-      errorBody = await response.json();
-    } catch (e) {
-      errorBody = await response.text().catch(() => response.statusText);
+    if (body) {
+        options.body = JSON.stringify(body);
     }
 
-    let errorMessage = response.statusText;
-    if (typeof errorBody === 'object' && errorBody !== null) {
-      errorMessage = errorBody.message || errorBody.detail || JSON.stringify(errorBody);
-    } else if (typeof errorBody === 'string' && errorBody.length > 0) {
-      errorMessage = errorBody;
-    }
-    throw new Error(errorMessage || `Server vrátil status ${response.status}`);
-  }
-  if (response.status === 204 || response.headers.get('Content-Length') === '0') {
-    return null as T;
-  }
+    const response = await fetch(url, options);
 
-  return await response.json() as T; 
+    if (!response.ok) {
+        let errorBody: any;
+        try {
+        errorBody = await response.json();
+        } catch (e) {
+        errorBody = await response.text().catch(() => response.statusText);
+        }
+
+        let errorMessage = response.statusText;
+        if (typeof errorBody === 'object' && errorBody !== null) {
+            errorMessage = errorBody.message || errorBody.detail || JSON.stringify(errorBody);
+        } else if (typeof errorBody === 'string' && errorBody.length > 0) {
+            errorMessage = errorBody;
+        }
+        throw new Error(errorMessage || `Server vrátil status ${response.status}`);
+    }
+    if (response.status === 204 || response.headers.get('Content-Length') === '0') {
+        return null as T;
+    }
+
+    return await response.json() as T; 
 }
 
 const api = {
